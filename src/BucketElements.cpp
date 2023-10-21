@@ -26,14 +26,16 @@ void BucketElements::pushUnsafe(NodeWeakPtr const & obj)
 void BucketElements::removeExpiredEveryNthCall()
 {
     static constexpr auto N{ 20 };
-    if (++callCounter % N)
+    if (++callCounter % N == 0)
     {
-        nodes_.erase(std::remove_if(nodes_.begin(),
-                                    nodes_.end(),
-                                    [](NodeWeakPtr const & obj)
-                                    {
-                                        return obj.expired();
-                                    }));
+        nodes_.erase(std::remove_if(
+                         nodes_.begin(),
+                         nodes_.end(),
+                         [](NodeWeakPtr const & obj)
+                         {
+                             return obj.expired();
+                         }),
+                nodes_.end());
         callCounter = 0;
     }
 }

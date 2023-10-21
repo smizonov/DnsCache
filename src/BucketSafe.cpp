@@ -10,7 +10,7 @@ BucketSafe::BucketSafe(ActualNodes & obj)
     : actualNodes_(obj)
 {}
 
-void BucketSafe::update(const std::string& name, const std::string& ip)
+void BucketSafe::update(std::string const & name, std::string const & ip)
 {
     std::lock_guard<std::mutex> lock(m_);
 
@@ -32,8 +32,9 @@ std::string BucketSafe::resolve(const std::string& name)
 
     if (auto node = internalNodes_.findUnsafe(name))
     {
+        std::string tmp{ node->ip };
         actualNodes_.update(std::move(node));
-        return node->ip;
+        return tmp;
     }
 
     return "";

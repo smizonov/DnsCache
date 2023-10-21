@@ -15,7 +15,7 @@ namespace network
 
 DNSCache::DNSCache(size_t max_size)
     : actualData_(max_size)
-    , data_(max_size)
+    , data_(max_size, actualData_)
 {
 }
 

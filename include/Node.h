@@ -7,9 +7,13 @@ namespace network
 
 struct Node
 {
-    int64_t lastUsageIndex{ 0 };
+    Node(std::string const & name, std::string const & ip):
+        name(name),
+        ip(ip)
+    {};
     std::string name;
     std::string ip;
+    int64_t lastUsageIndex{ 0 };
 };
 
 }

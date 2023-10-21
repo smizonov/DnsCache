@@ -12,7 +12,7 @@ ActualNodes::ActualNodes(size_t size)
     : maxSize_(size)
 {
     assert(maxSize_ != 0);
-    actualData_.reserve(maxSize_);
+    data_.reserve(maxSize_);
 }
 
 void ActualNodes::update(NodePtr && node)
@@ -22,9 +22,9 @@ void ActualNodes::update(NodePtr && node)
 
     std::lock_guard<std::mutex> lock(m_);
     auto minLastUsageIndex{ 0 };
-    auto minLastUsageIt{ actualData_.begin() };
-    auto foundNodeIt{ actualData_.end() };
-    for (auto it = actualData_.begin(); it != actualData_.end(); ++it)
+    auto minLastUsageIt{ data_.begin() };
+    auto foundNodeIt{ data_.end() };
+    for (auto it = data_.begin(); it != data_.end(); ++it)
     {
         if (*it == node)
         {
@@ -40,10 +40,10 @@ void ActualNodes::update(NodePtr && node)
     }
 
     node->lastUsageIndex = ++currentUsageIndex_;
-    if (actualData_.end() == foundNodeIt)
+    if (data_.end() == foundNodeIt)
     {
-        if (maxSize_ < actualData_.size())
-            actualData_.push_back(std::move(node));
+        if (maxSize_ > data_.size())
+            data_.push_back(std::move(node));
         else
             *minLastUsageIt = std::move(node);
     }

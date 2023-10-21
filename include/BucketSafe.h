@@ -1,3 +1,4 @@
+#pragma once
 #include <string>
 #include <mutex>
 #include <list>
@@ -13,6 +14,9 @@ class BucketSafe
 {
 public:
     BucketSafe(ActualNodes &);
+
+    BucketSafe(BucketSafe const &) = delete;
+    BucketSafe(BucketSafe &&) = delete;
 
 public:
     void update(std::string const & name, std::string const & ip);

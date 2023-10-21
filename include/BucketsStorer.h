@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <Fwd.h>
+#include <BucketSafe.h>
 
 namespace network
 {
@@ -8,11 +9,11 @@ namespace network
 class BucketsStorer
 {
 public:
-    BucketsStorer(size_t size);
+    BucketsStorer(size_t size, ActualNodes &);
     BucketSafe & get(std::string const & name);
 
 private:
-    std::vector<BucketSafe> data_;
+    std::vector<std::unique_ptr<BucketSafe>> data_;
 };
 
 }
