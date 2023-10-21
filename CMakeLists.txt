@@ -1,33 +1,18 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.15)
 
-project(DnsCache LANGUAGES CXX)
+project(DnsCache)
 
-set(IncludeDir ${PROJECT_SOURCE_DIR}/include)
+# Set project-wide properties and find dependencies here
+# (e.g., setting C++ standard, finding libraries)
 
-set(SOURCES
-    src/ActualNodes.cpp
-    src/DnsCache.cpp
-    src/BucketSafe.cpp
-    src/BucketElements.cpp
-    src/BucketsStorer.cpp
-    src/Node.cpp
-    main.cpp
-    ${IncludeDir}/BucketsStorer.h
-    ${IncludeDir}/Fwd.h
-    ${IncludeDir}/ActualNodes.h
-    ${IncludeDir}/DnsCache.h
-    ${IncludeDir}/BucketSafe.h
-    ${IncludeDir}/BucketElements.h
-    ${IncludeDir}/Node.h
-)
+# Add the include directory if you have public headers
+#include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+find_package(GTest REQUIRED)
 
+enable_testing()
+
+add_subdirectory(src)
 add_subdirectory(test)
-
-add_executable(DnsCache ${SOURCES})
-
-target_include_directories( ${PROJECT_NAME}
-    PUBLIC ${IncludeDir}
-)

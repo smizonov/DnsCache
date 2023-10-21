@@ -20,7 +20,7 @@ private:
     std::mutex m_;
     size_t const maxSize_;
     std::vector<NodePtr> data_;
-    int64_t currentUsageIndex_{ 0 };
+    uint64_t currentUsageIndex_{ 0 };
 };
 
 }

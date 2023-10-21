@@ -6,7 +6,7 @@
 namespace network
 {
 
-NodePtr BucketElements::findUnsafe(std::string const & name)
+NodePtr BucketElements::find(std::string const & name)
 {
     removeExpiredEveryNthCall();
     for (auto const & obj : nodes_)
@@ -17,7 +17,7 @@ NodePtr BucketElements::findUnsafe(std::string const & name)
     return nullptr;
 }
 
-void BucketElements::pushUnsafe(NodeWeakPtr const & obj)
+void BucketElements::push(NodeWeakPtr const & obj)
 {
     removeExpiredEveryNthCall();
     nodes_.push_back(obj);
@@ -26,7 +26,7 @@ void BucketElements::pushUnsafe(NodeWeakPtr const & obj)
 void BucketElements::removeExpiredEveryNthCall()
 {
     static constexpr auto N{ 20 };
-    if (++callCounter % N == 0)
+    if (++callCounter_ % N == 0)
     {
         nodes_.erase(std::remove_if(
                          nodes_.begin(),
@@ -36,7 +36,7 @@ void BucketElements::removeExpiredEveryNthCall()
                              return obj.expired();
                          }),
                 nodes_.end());
-        callCounter = 0;
+        callCounter_ = 0;
     }
 }
 

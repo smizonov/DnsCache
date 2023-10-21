@@ -12,14 +12,14 @@ namespace network
 class BucketElements
 {
 public:
-    NodePtr findUnsafe(std::string const & name);
-    void pushUnsafe(NodeWeakPtr const &);
+    NodePtr find(std::string const & name);
+    void push(NodeWeakPtr const &);
 
 private:
     void removeExpiredEveryNthCall();
 
 private:
-    int callCounter{ 0 };
+    int callCounter_{ 0 };
     std::vector<NodeWeakPtr> nodes_;
 };
 

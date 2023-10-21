@@ -10,7 +10,7 @@ Node::Node(std::string const & name, std::string const & ip):
     ip_(ip)
 {}
 
-int64_t Node::lastUsageIndex()
+uint64_t Node::lastUsageIndex()
 {
     return lastUsageIndex_;
 }

@@ -13,7 +13,7 @@ public:
     Node(Node &&) = delete;
 
 public:
-    int64_t lastUsageIndex();
+    uint64_t lastUsageIndex();
     std::string const & ip();
     std::string const & name();
     void setLastUsageIndex(int64_t val);
@@ -22,7 +22,7 @@ public:
 private:
     std::string name_;
     std::string ip_;
-    int64_t lastUsageIndex_{ 0 };
+    uint64_t lastUsageIndex_{ 0 };
 };
 
 }

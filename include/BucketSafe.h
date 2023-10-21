@@ -25,7 +25,7 @@ public:
 private:
     std::mutex m_;
     BucketElements internalNodes_;
-    ActualNodes & actualNodes_;
+    ActualNodes & actualData_;
 };
 
 }

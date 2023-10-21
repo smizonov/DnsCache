@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <exception>
+#include <limits.h>
 
 #include <Node.h>
 
@@ -21,7 +22,7 @@ void ActualNodes::update(NodePtr && node)
         throw std::runtime_error("ActualNodes::update: node is nullptr");
 
     std::lock_guard<std::mutex> lock(m_);
-    auto minLastUsageIndex{ 0 };
+    auto minLastUsageIndex{ std::numeric_limits<uint64_t>::max() };
     auto minLastUsageIt{ data_.begin() };
     auto foundNodeIt{ data_.end() };
     for (auto it = data_.begin(); it != data_.end(); ++it)
