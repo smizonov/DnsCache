@@ -1,7 +1,8 @@
 #include <string>
 #include <unordered_map>
 
-#include <ActualNodesQueue.h>
+#include <ActualNodes.h>
+#include <BucketsStorer.h>
 #include <Fwd.h>
 
 namespace network
@@ -16,7 +17,7 @@ public:
 
 private:
     ActualNodes actualData_;
-    std::unordered_map<std::string, BacketSafe> data_;
+    BucketsStorer data_;
 };
 
 }

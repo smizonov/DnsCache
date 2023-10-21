@@ -1,11 +1,7 @@
-#include <iostream>
-#include <boost/optional.hpp>
-#include <vector>
-#include <list>
-#include <mutex>
-#include <boost/circular_buffer.hpp>
+#include <DnsCache.h>
 
-using namespace std;
+#include <BucketsStorer.h>
+#include <BucketSafe.h>
 
 #include <iostream>
 #include <string>
@@ -13,3 +9,25 @@ using namespace std;
 #include <mutex>
 #include <memory>
 
+
+namespace network
+{
+
+DNSCache::DNSCache(size_t max_size)
+    : actualData_(max_size)
+    , data_(max_size)
+{
+}
+
+void DNSCache::update(std::string const & name, std::string const & ip)
+{
+    data_.get(name).update(name, ip);
+}
+
+std::string DNSCache::resolve(const std::string &name)
+{
+    return data_.get(name).resolve(name);
+}
+
+
+}

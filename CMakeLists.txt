@@ -5,14 +5,18 @@ project(DnsCache LANGUAGES CXX)
 set(IncludeDir ${PROJECT_SOURCE_DIR}/include)
 
 set(SOURCES
-    src/ActualNodesQueue.cpp
+    src/ActualNodes.cpp
     src/DnsCache.cpp
-    src/SafeBucket.cpp
+    src/BucketSafe.cpp
+    src/BucketElements.cpp
+    src/BucketsStorer.cpp
     main.cpp
+    ${IncludeDir}/BucketsStorer.h
     ${IncludeDir}/Fwd.h
-    ${IncludeDir}/ActualNodesQueue.h
+    ${IncludeDir}/ActualNodes.h
     ${IncludeDir}/DnsCache.h
-    ${IncludeDir}/SafeBucket.h
+    ${IncludeDir}/BucketSafe.h
+    ${IncludeDir}/BucketElements.h
     ${IncludeDir}/Node.h
 )
 
