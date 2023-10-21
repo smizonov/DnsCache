@@ -11,7 +11,7 @@ NodePtr BucketElements::findUnsafe(std::string const & name)
     removeExpiredEveryNthCall();
     for (auto const & obj : nodes_)
     {
-        if (auto locked = obj.lock(); locked && name == locked->name)
+        if (auto locked = obj.lock(); locked && name == locked->name())
             return locked;
     }
     return nullptr;

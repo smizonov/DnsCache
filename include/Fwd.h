@@ -6,6 +6,7 @@ namespace network
 struct Node;
 class ActualNodes;
 class BucketSafe;
+class BucketsStorer;
 class DNSCache;
 class BucketElements;
 using NodePtr = std::shared_ptr<Node>;

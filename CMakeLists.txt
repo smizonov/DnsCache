@@ -10,6 +10,7 @@ set(SOURCES
     src/BucketSafe.cpp
     src/BucketElements.cpp
     src/BucketsStorer.cpp
+    src/Node.cpp
     main.cpp
     ${IncludeDir}/BucketsStorer.h
     ${IncludeDir}/Fwd.h
@@ -22,6 +23,8 @@ set(SOURCES
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+add_subdirectory(test)
 
 add_executable(DnsCache ${SOURCES})
 

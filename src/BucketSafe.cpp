@@ -16,7 +16,7 @@ void BucketSafe::update(std::string const & name, std::string const & ip)
 
     if (auto node = internalNodes_.findUnsafe(name))
     {
-        node->ip = ip;
+        node->setIp(ip);
         actualNodes_.update(std::move(node));
         return;
     }
@@ -32,7 +32,7 @@ std::string BucketSafe::resolve(const std::string& name)
 
     if (auto node = internalNodes_.findUnsafe(name))
     {
-        std::string tmp{ node->ip };
+        auto tmp{ node->ip() };
         actualNodes_.update(std::move(node));
         return tmp;
     }

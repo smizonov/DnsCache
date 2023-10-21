@@ -32,14 +32,14 @@ void ActualNodes::update(NodePtr && node)
             break;
         }
 
-        if (it->get()->lastUsageIndex < minLastUsageIndex)
+        if (it->get()->lastUsageIndex() < minLastUsageIndex)
         {
-            minLastUsageIndex = it->get()->lastUsageIndex;
+            minLastUsageIndex = it->get()->lastUsageIndex();
             minLastUsageIt = it;
         }
     }
 
-    node->lastUsageIndex = ++currentUsageIndex_;
+    node->setLastUsageIndex(++currentUsageIndex_);
     if (data_.end() == foundNodeIt)
     {
         if (maxSize_ > data_.size())
