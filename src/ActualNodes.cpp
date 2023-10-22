@@ -1,6 +1,7 @@
 #include <ActualNodes.h>
 
 #include <algorithm>
+#include <cassert>
 #include <exception>
 #include <limits.h>
 
@@ -18,35 +19,34 @@ ActualNodes::ActualNodes(size_t size)
 
 void ActualNodes::update(NodePtr && node)
 {
+    std::lock_guard<std::mutex> lock(m_);
+
     if (!node)
         throw std::runtime_error("ActualNodes::update: node is nullptr");
 
-    std::lock_guard<std::mutex> lock(m_);
-    auto minLastUsageIndex{ std::numeric_limits<uint64_t>::max() };
-    auto minLastUsageIt{ data_.begin() };
-    auto foundNodeIt{ data_.end() };
-    for (auto it = data_.begin(); it != data_.end(); ++it)
-    {
-        if (*it == node)
-        {
-            foundNodeIt = it;
-            break;
-        }
-
-        if (it->get()->lastUsageIndex() < minLastUsageIndex)
-        {
-            minLastUsageIndex = it->get()->lastUsageIndex();
-            minLastUsageIt = it;
-        }
-    }
-
     node->setLastUsageIndex(++currentUsageIndex_);
-    if (data_.end() == foundNodeIt)
+
+    if (node->storageIndex().has_value() &&
+            data_[node->storageIndex().value()] == node)
+        return;
+
+    if (maxSize_ > data_.size())
     {
-        if (maxSize_ > data_.size())
-            data_.push_back(std::move(node));
-        else
-            *minLastUsageIt = std::move(node);
+        node->setStorageIndex(data_.size());
+        data_.push_back(std::move(node));
+    }
+    else
+    {
+        auto oldestUpdatedIt = std::min_element(
+                    data_.begin(),
+                    data_.end(),
+                    []
+                    (NodePtr const & lhs, NodePtr const & rhs)
+                    {
+                        return lhs->lastUsageIndex() < rhs->lastUsageIndex();
+                    });
+        node->setStorageIndex(oldestUpdatedIt - data_.begin());
+        *oldestUpdatedIt = std::move(node);
     }
 }
 

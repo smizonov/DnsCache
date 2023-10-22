@@ -1,6 +1,6 @@
 #include <BucketsStorer.h>
 
-#include <BucketSafe.h>
+#include <Bucket.h>
 
 #include <functional>
 #include <string>
@@ -14,10 +14,10 @@ BucketsStorer::BucketsStorer(
 {
     data_.reserve(size);
     for(size_t i = 0; i < size; ++i)
-        data_.emplace_back(std::make_unique<BucketSafe>(nodes));
+        data_.emplace_back(std::make_unique<Bucket>(nodes));
 }
 
-BucketSafe &BucketsStorer::get(const std::string &name)
+Bucket &BucketsStorer::get(const std::string &name)
 {
     return *data_[std::hash<std::string>{}(name) % data_.size()];
 }

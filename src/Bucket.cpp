@@ -1,38 +1,39 @@
-#include <BucketSafe.h>
+#include <Bucket.h>
 
+#include <CachedItem.h>
 #include <Node.h>
 #include <ActualNodes.h>
 
 namespace network
 {
 
-BucketSafe::BucketSafe(ActualNodes & obj)
+Bucket::Bucket(ActualNodes & obj)
     : actualData_(obj)
 {}
 
-void BucketSafe::update(std::string const & name, std::string const & ip)
+void Bucket::update(std::string const & name, std::string const & ip)
 {
     std::lock_guard<std::mutex> lock(m_);
 
     if (auto node = internalNodes_.find(name))
     {
-        node->setIp(ip);
+        node->cachedItem().setIp(ip);
         actualData_.update(std::move(node));
         return;
     }
 
-    auto newNode{ std::make_shared<Node>(name, ip) };
-    internalNodes_.push(NodeWeakPtr(newNode));
-    actualData_.update(std::move(newNode));
+    auto node{ std::make_shared<Node>(CachedItem(name, ip)) };
+    internalNodes_.push(NodeWeakPtr(node));
+    actualData_.update(std::move(node));
 }
 
-std::string BucketSafe::resolve(const std::string& name)
+std::string Bucket::resolve(const std::string& name)
 {
     std::lock_guard<std::mutex> lock(m_);
 
     if (auto node = internalNodes_.find(name))
     {
-        auto tmp{ node->ip() };
+        auto tmp{ node->cachedItem().ip() };
         actualData_.update(std::move(node));
         return tmp;
     }

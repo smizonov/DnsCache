@@ -1,6 +1,10 @@
 #pragma once
 
 #include <string>
+#include <optional>
+
+#include <Fwd.h>
+#include <CachedItem.h>
 
 namespace network
 {
@@ -8,21 +12,26 @@ namespace network
 struct Node
 {
 public:
-    Node(std::string const & name, std::string const & ip);
+    Node(CachedItem &&);
+
+    Node(Node &&) = default;
     Node(Node const &) = delete;
-    Node(Node &&) = delete;
+    Node& operator=(Node const &) = delete;
+    Node& operator=(Node &&) = delete;
+    ~Node() = default;
 
 public:
+    CachedItem & cachedItem();
+
     uint64_t lastUsageIndex();
-    std::string const & ip();
-    std::string const & name();
     void setLastUsageIndex(int64_t val);
-    void setIp(std::string const & ip);
+    std::optional<size_t> storageIndex();
+    void setStorageIndex(size_t);
 
 private:
-    std::string name_;
-    std::string ip_;
+    CachedItem cachedItem_;
     uint64_t lastUsageIndex_{ 0 };
+    std::optional<size_t> storageIndex_;
 };
 
 }

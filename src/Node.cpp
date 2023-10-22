@@ -5,24 +5,18 @@
 namespace network
 {
 
-Node::Node(std::string const & name, std::string const & ip):
-    name_(name),
-    ip_(ip)
+Node::Node(CachedItem && obj):
+    cachedItem_(std::move(obj))
 {}
+
+CachedItem &Node::cachedItem()
+{
+    return cachedItem_;
+}
 
 uint64_t Node::lastUsageIndex()
 {
     return lastUsageIndex_;
-}
-
-std::string const & Node::ip()
-{
-    return ip_;
-}
-
-const std::string &Node::name()
-{
-    return name_;
 }
 
 void Node::setLastUsageIndex(int64_t val)
@@ -30,9 +24,14 @@ void Node::setLastUsageIndex(int64_t val)
     lastUsageIndex_ = val;
 }
 
-void Node::setIp(std::string const & ip)
+std::optional<size_t> Node::storageIndex()
 {
-    ip_ = ip;
-};
+    return storageIndex_;
+}
+
+void Node::setStorageIndex(size_t index)
+{
+    storageIndex_ = index;
+}
 
 }

@@ -3,8 +3,6 @@
 #include <mutex>
 #include <vector>
 
-#include <boost/circular_buffer.hpp>
-
 #include <Fwd.h>
 
 namespace network

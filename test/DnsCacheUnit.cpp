@@ -12,12 +12,22 @@ std::string asIp(int i) {
     return "ip" + std::to_string(i);
 }
 
+
+class DnsCacheMock:
+        public network::DNSCache
+{
+public:
+    DnsCacheMock(size_t maxSize):
+        network::DNSCache(maxSize)
+    {};
+};
+
 }
 
 TEST(DnsCacheUnit, EmptyCheck)
 {
     using namespace network;
-    DNSCache cache(1);
+    DnsCacheMock cache(1);
 
     auto str = "str";
     EXPECT_EQ("", cache.resolve(str));
@@ -26,7 +36,7 @@ TEST(DnsCacheUnit, EmptyCheck)
 TEST(DnsCacheUnit, UpdateCheck)
 {
     using namespace network;
-    DNSCache cache(1);
+    DnsCacheMock cache(1);
 
     std::string name = "name";
     std::string ip = "ip";
@@ -41,7 +51,7 @@ TEST(DnsCacheUnit, FillCheck)
 {
     using namespace network;
     constexpr auto kSize{ 10 };
-    DNSCache cache(kSize);
+    DnsCacheMock cache(kSize);
 
     for (int i = 0; i < kSize; ++i)
     {
@@ -58,7 +68,7 @@ TEST(DnsCacheUnit, OverflowCheck)
 {
     using namespace network;
     constexpr auto kSize{ 10 };
-    DNSCache cache(kSize);
+    DnsCacheMock cache(kSize);
 
     auto constexpr kOverflowCount{ 2 * kSize };
     for (int i = 0; i < kOverflowCount; ++i)

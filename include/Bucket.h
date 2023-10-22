@@ -10,13 +10,16 @@
 namespace network
 {
 
-class BucketSafe
+class Bucket
 {
 public:
-    BucketSafe(ActualNodes &);
+    Bucket(ActualNodes &);
 
-    BucketSafe(BucketSafe const &) = delete;
-    BucketSafe(BucketSafe &&) = delete;
+    Bucket(Bucket const &) = delete;
+    Bucket(Bucket &&) = delete;
+    Bucket& operator=(Bucket const &) = delete;
+    Bucket& operator=(Bucket &&) = delete;
+    ~Bucket() = default;
 
 public:
     void update(std::string const & name, std::string const & ip);

@@ -1,27 +1,40 @@
 #include <DnsCache.h>
 
-#include <memory>
-#include <mutex>
-
 #include <BucketsStorer.h>
-#include <BucketSafe.h>
+#include <Bucket.h>
 
 namespace network
 {
 
+void DNSCache::create(size_t max_size)
+{
+    getInstanceImpl(max_size);
+}
+
+DNSCache & DNSCache::getInstance()
+{
+    return getInstanceImpl();
+}
+
 DNSCache::DNSCache(size_t max_size)
-    : actualData_(max_size)
-    , data_(max_size, actualData_)
+    : actualData_(ActualNodes(max_size))
+    , dataForSearching_(max_size, actualData_)
 {}
+
+DNSCache & DNSCache::getInstanceImpl(size_t max_size)
+{
+    static DNSCache cache(max_size);
+    return cache;
+}
 
 void DNSCache::update(std::string const & name, std::string const & ip)
 {
-    data_.get(name).update(name, ip);
+    dataForSearching_.get(name).update(name, ip);
 }
 
 std::string DNSCache::resolve(const std::string &name)
 {
-    return data_.get(name).resolve(name);
+    return dataForSearching_.get(name).resolve(name);
 }
 
 }

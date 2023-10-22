@@ -2,18 +2,21 @@
 set(Headers
     ../include/ActualNodes.h
     ../include/DnsCache.h
-    ../include/BucketSafe.h
+    ../include/Bucket.h
     ../include/BucketElements.h
     ../include/BucketsStorer.h
-    ../include/Node.h)
+    ../include/Node.h
+    ../include/Fwd.h
+    ../include/CachedItem.h)
 
 set(Sources
     ActualNodes.cpp
     DnsCache.cpp
-    BucketSafe.cpp
+    Bucket.cpp
     BucketElements.cpp
     BucketsStorer.cpp
-    Node.cpp)
+    Node.cpp
+    CachedItem.cpp)
 
 add_library(DnsCache
     ${Sources} ${Headers}
