@@ -1,8 +1,10 @@
-
 #include <thread>
+#include <sstream>
+#include <string>
+#include <memory>
 
 #include <gtest/gtest.h>
-#include <sstream>
+
 #include <DnsCache.h>
 #include <Utils.h>
 

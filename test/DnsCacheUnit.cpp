@@ -1,5 +1,7 @@
+#include <string>
 
 #include <gtest/gtest.h>
+
 #include <DnsCache.h>
 #include <Utils.h>
 

@@ -1,7 +1,5 @@
 #include <Node.h>
 
-#include <string>
-
 namespace network
 {
 
