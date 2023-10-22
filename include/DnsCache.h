@@ -4,7 +4,6 @@
 
 #include <ActualNodes.h>
 #include <BucketsStorer.h>
-#include <Fwd.h>
 
 namespace network
 {

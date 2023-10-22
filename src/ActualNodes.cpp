@@ -3,7 +3,6 @@
 #include <algorithm>
 #include <cassert>
 #include <exception>
-#include <limits.h>
 
 #include <Node.h>
 

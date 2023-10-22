@@ -3,7 +3,6 @@
 #include <string>
 #include <optional>
 
-#include <Fwd.h>
 #include <CachedItem.h>
 
 namespace network

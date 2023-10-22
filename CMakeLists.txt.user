@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 6.0.1, 2023-10-22T01:14:15. -->
+<!-- Written by QtCreator 6.0.1, 2023-10-22T14:38:34. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -68,9 +68,12 @@
     <value type="bool" key="AutoTest.Framework.QtTest">true</value>
    </valuemap>
    <valuemap type="QVariantMap" key="AutoTest.CheckStates">
+    <value type="Qt::CheckState" key="1@/home/serj/Qt/sobes/DnsCache/DnsCache/test/DnsCacheStress.cpp:DnsCacheStress">Checked</value>
+    <value type="Qt::CheckState" key="1@/home/serj/Qt/sobes/DnsCache/DnsCache/test/DnsCacheStress.cpp:NonexsistanceCheck">Checked</value>
     <value type="Qt::CheckState" key="1@/home/serj/Qt/sobes/DnsCache/DnsCache/test/DnsCacheUnit.cpp:DnsCacheUnit">Checked</value>
     <value type="Qt::CheckState" key="1@/home/serj/Qt/sobes/DnsCache/DnsCache/test/DnsCacheUnit.cpp:EmptyCheck">Checked</value>
     <value type="Qt::CheckState" key="1@/home/serj/Qt/sobes/DnsCache/DnsCache/test/DnsCacheUnit.cpp:FillCheck">Checked</value>
+    <value type="Qt::CheckState" key="1@/home/serj/Qt/sobes/DnsCache/DnsCache/test/DnsCacheUnit.cpp:NonexsistanceCheck">Checked</value>
     <value type="Qt::CheckState" key="1@/home/serj/Qt/sobes/DnsCache/DnsCache/test/DnsCacheUnit.cpp:OverflowCheck">Checked</value>
     <value type="Qt::CheckState" key="1@/home/serj/Qt/sobes/DnsCache/DnsCache/test/DnsCacheUnit.cpp:UpdateCheck">Checked</value>
    </valuemap>

@@ -1,74 +1,69 @@
 
-//#include <gtest/gtest.h>
-//#include <DnsCache.h>
+#include <thread>
 
-//#include <thread>
+#include <gtest/gtest.h>
+#include <sstream>
+#include <DnsCache.h>
+#include <Utils.h>
 
-//namespace {
+namespace  {
+using namespace network;
 
-//std::string asName(int i) {
-//    return "name" + std::to_string(i);
-//}
+void multipleWrite(
+        utils::DnsCacheMock & cache,
+        size_t itarationCount,
+        std::shared_ptr<std::string> threadId)
+{
+    std::stringstream tmp;
+    tmp << std::this_thread::get_id();
+    *threadId = tmp.str();
+    for (size_t i = 0; i < itarationCount; ++i)
+    {
+        cache.update(utils::asName(i, *threadId), utils::asIp(i, *threadId));
+    }
+}
 
-//std::string asIp(int i) {
-//    return "ip" + std::to_string(i);
-//}
+struct ThreadWithId
+{
+    std::shared_ptr<std::string> id;
+    std::unique_ptr<std::thread> t;
+};
 
-//}
+}
 
-//TEST(DnsCacheStress, twoThreads)
-//{
-////    std::thread
-//}
+TEST(DnsCacheStress, NonexsistanceCheck)
+{
+    auto constexpr cacheSize{ 50 };
+    auto constexpr iterationCount{ 1'000'000 };
+    auto constexpr threadsCount{ 5 };
+    utils::DnsCacheMock cache(cacheSize);
 
-//TEST(DnsCache, UpdateCheck)
-//{
-//    using namespace network;
-//    DNSCache::create(1);
-//    auto & cache{ DNSCache::getInstance() };
+    std::vector<ThreadWithId> pool;
+    for (int i = 0; i < threadsCount; ++i)
+    {
+        ThreadWithId obj;
+        obj.id = std::make_shared<std::string>();
+        obj.t = std::make_unique<std::thread>(multipleWrite, std::ref(cache), iterationCount, obj.id);
+        pool.emplace_back(std::move(obj));
+    }
 
-//    std::string name = "name";
-//    std::string ip = "ip";
-//    cache.update(name, ip);
-//    EXPECT_EQ(ip, cache.resolve(name));
-//    ip = "updatededIp";
-//    cache.update(name, ip);
-//    EXPECT_EQ(ip, cache.resolve(name));
-//}
+    for (int i = 0; i < threadsCount; ++i)
+    {
+        pool[i].t->join();
+    }
 
-//TEST(DnsCache, FillCheck)
-//{
-//    using namespace network;
-//    constexpr auto kSize{ 10 };
-//    DNSCache cache(kSize);
-//    auto & cache{ DNSCache::getInstance() };
+    size_t remainingSuitableRecordingsCount{ 0 };
 
-//    for (int i = 0; i < kSize; ++i)
-//    {
-//        cache.update(asName(i), asIp(i));
-//    }
-
-//    for (int i = 0; i < kSize; ++i)
-//    {
-//        EXPECT_EQ(cache.resolve(asName(i)), asIp(i));
-//    }
-//}
-
-//TEST(DnsCache, OverflowCheck)
-//{
-//    using namespace network;
-//    constexpr auto kSize{ 10 };
-//    DNSCache cache(kSize);
-//    auto & cache{ DNSCache::getInstance() };
-
-//    auto constexpr kOverflowCount{ 2 * kSize };
-//    for (int i = 0; i < kOverflowCount; ++i)
-//    {
-//        cache.update(asName(i), asIp(i));
-//    }
-
-//    for (int i = (kOverflowCount - kSize); i < kOverflowCount; ++i)
-//    {
-//        EXPECT_EQ(cache.resolve(asName(i)), asIp(i));
-//    }
-//}
+    for (int lastsIndes = (iterationCount - cacheSize); lastsIndes < iterationCount; ++lastsIndes)
+    {
+        for (int threadIndex = 0; threadIndex < threadsCount; ++threadIndex)
+        {
+            if (utils::asIp(lastsIndes, *pool[threadIndex].id) ==
+                    cache.resolve(utils::asName(lastsIndes, *pool[threadIndex].id)))
+            {
+                ++remainingSuitableRecordingsCount;
+            }
+        }
+    }
+    EXPECT_EQ(remainingSuitableRecordingsCount, cacheSize);
+}
