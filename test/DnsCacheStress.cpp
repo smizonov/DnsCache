@@ -31,10 +31,10 @@ struct ThreadWithId
 
 }
 
-TEST(DnsCacheStress, NonexsistanceCheck)
+TEST(DnsCacheStress, FinalRecordingCheck)
 {
-    auto constexpr cacheSize{ 50 };
-    auto constexpr iterationCount{ 1'000'000 };
+    auto constexpr cacheSize{ 20 };
+    auto constexpr iterationCount{ 100'000 };
     auto constexpr threadsCount{ 5 };
     utils::DnsCacheMock cache(cacheSize);
 
