@@ -1,33 +1,12 @@
 
 #include <gtest/gtest.h>
 #include <DnsCache.h>
+#include <Utils.h>
 
-namespace {
-
-std::string asName(int i) {
-    return "name" + std::to_string(i);
-}
-
-std::string asIp(int i) {
-    return "ip" + std::to_string(i);
-}
-
-
-class DnsCacheMock:
-        public network::DNSCache
-{
-public:
-    DnsCacheMock(size_t maxSize):
-        network::DNSCache(maxSize)
-    {};
-};
-
-}
-
-TEST(DnsCacheUnit, EmptyCheck)
+TEST(DnsCacheUnit, NonexsistanceCheck)
 {
     using namespace network;
-    DnsCacheMock cache(1);
+    utils::DnsCacheMock cache(1);
 
     auto str = "str";
     EXPECT_EQ("", cache.resolve(str));
@@ -36,7 +15,7 @@ TEST(DnsCacheUnit, EmptyCheck)
 TEST(DnsCacheUnit, UpdateCheck)
 {
     using namespace network;
-    DnsCacheMock cache(1);
+    utils::DnsCacheMock cache(1);
 
     std::string name = "name";
     std::string ip = "ip";
@@ -51,16 +30,16 @@ TEST(DnsCacheUnit, FillCheck)
 {
     using namespace network;
     constexpr auto kSize{ 10 };
-    DnsCacheMock cache(kSize);
+    utils::DnsCacheMock cache(kSize);
 
     for (int i = 0; i < kSize; ++i)
     {
-        cache.update(asName(i), asIp(i));
+        cache.update(utils::asName(i), utils::asIp(i));
     }
 
     for (int i = 0; i < kSize; ++i)
     {
-        EXPECT_EQ(cache.resolve(asName(i)), asIp(i));
+        EXPECT_EQ(cache.resolve(utils::asName(i)), utils::asIp(i));
     }
 }
 
@@ -68,16 +47,16 @@ TEST(DnsCacheUnit, OverflowCheck)
 {
     using namespace network;
     constexpr auto kSize{ 10 };
-    DnsCacheMock cache(kSize);
+    utils::DnsCacheMock cache(kSize);
 
     auto constexpr kOverflowCount{ 2 * kSize };
     for (int i = 0; i < kOverflowCount; ++i)
     {
-        cache.update(asName(i), asIp(i));
+        cache.update(utils::asName(i), utils::asIp(i));
     }
 
     for (int i = (kOverflowCount - kSize); i < kOverflowCount; ++i)
     {
-        EXPECT_EQ(cache.resolve(asName(i)), asIp(i));
+        EXPECT_EQ(cache.resolve(utils::asName(i)), utils::asIp(i));
     }
 }
